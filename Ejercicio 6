@@ -1,0 +1,84 @@
+superheroes = [
+    {
+        "nombre": "Superman",
+        "año_aparicion": 1938,
+        "casa_comic": "DC",
+        "biografia": "El último hijo de Krypton, Superman..."
+    },
+    {
+        "nombre": "Batman",
+        "año_aparicion": 1939,
+        "casa_comic": "DC",
+        "biografia": "Bruce Wayne, también conocido como Batman..."
+    },
+]
+def eliminar_superheroe(nombre):
+    global superheroes
+    superheroes = [hero for hero in superheroes if hero["nombre"] != nombre]
+    
+def mostrar_aparicion_wolverine():
+    for hero in superheroes:
+        if hero["nombre"] == "Wolverine":
+            return hero["año_aparicion"]
+
+def cambiar_casa_dr_strange():
+    for hero in superheroes:
+        if hero["nombre"] == "Dr. Strange":
+            hero["casa_comic"] = "Marvel"
+
+def superheroes_con_palabras_en_biografia(palabras):
+    matching_heroes = []
+    for hero in superheroes:
+        if any(word in hero["biografia"].lower() for word in palabras):
+            matching_heroes.append(hero["nombre"])
+    return matching_heroes
+
+def superheroes_anteriores_a(año):
+    matching_heroes = []
+    for hero in superheroes:
+        if hero["año_aparicion"] < año:
+            matching_heroes.append({"nombre": hero["nombre"], "casa_comic": hero["casa_comic"]})
+    return matching_heroes
+
+def casa_de_superheroes(nombre1, nombre2):
+    casas = {}
+    for hero in superheroes:
+        if hero["nombre"] in [nombre1, nombre2]:
+            casas[hero["nombre"]] = hero["casa_comic"]
+    return casas
+
+def informacion_superheroes(nombre1, nombre2):
+    heroes_info = {}
+    for hero in superheroes:
+        if hero["nombre"] in [nombre1, nombre2]:
+            heroes_info[hero["nombre"]] = {
+                "año_aparicion": hero["año_aparicion"],
+                "casa_comic": hero["casa_comic"],
+                "biografia": hero["biografia"]
+            }
+    return heroes_info
+
+def superheroes_por_letra(letras):
+    matching_heroes = []
+    for hero in superheroes:
+        if hero["nombre"][0] in letras:
+            matching_heroes.append(hero["nombre"])
+    return matching_heroes
+
+def contar_superheroes_por_casa():
+    counts = {"Marvel": 0, "DC": 0}
+    for hero in superheroes:
+        counts[hero["casa_comic"]] += 1
+    return counts
+
+eliminar_superheroe("Linterna Verde")
+print(mostrar_aparicion_wolverine())
+
+cambiar_casa_dr_strange()
+print(superheroes_con_palabras_en_biografia(["traje", "armadura"]))
+print(superheroes_anteriores_a(1963))
+
+print(casa_de_superheroes("Capitana Marvel", "Mujer Maravilla"))
+print(informacion_superheroes("Flash", "Star-Lord"))
+print(superheroes_por_letra(["B", "M", "S"]))
+print(contar_superheroes_por_casa())

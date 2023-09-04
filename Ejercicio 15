@@ -1,0 +1,78 @@
+entrenadores = [
+    ["Entrenador1", 5, 10, 20, [["Pokémon1", 30, "fuego", ""], ["Pokémon2", 25, "agua", "volador"]]],
+    ["Entrenador2", 2, 5, 15, [["Pokémon3", 40, "planta", ""], ["Pokémon4", 30, "fuego", "planta"]]],
+]
+def cantidad_pokemons(entrenador_nombre):
+    for entrenador in entrenadores:
+        if entrenador[0] == entrenador_nombre:
+            return len(entrenador[4])
+    return 0
+
+def entrenadores_mas_de_tres_torneos():
+    return [entrenador[0] for entrenador in entrenadores if entrenador[1] > 3]  
+
+def pokemon_mayor_nivel_entrenador_mas_torneos():
+    entrenadores.sort(key=lambda x: x[1], reverse=True)  # Ordenar por torneos ganados (mayor a menor)
+    max_torneos = entrenadores[0][1]
+    
+    max_torneos_entrenadores = [entrenador for entrenador in entrenadores if entrenador[1] == max_torneos]
+    max_torneos_entrenadores.sort(key=lambda x: max(x[4], key=lambda p: p[1])[1], reverse=True)
+    
+    return max_torneos_entrenadores[0][4]
+
+def mostrar_datos_entrenador(entrenador_nombre):
+    for entrenador in entrenadores:
+        if entrenador[0] == entrenador_nombre:
+            return entrenador
+
+def entrenadores_porcentaje_batallas_alto():
+    return [entrenador[0] for entrenador in entrenadores if entrenador[3] / (entrenador[3] + entrenador[2]) > 0.79]
+
+def entrenadores_tipo_combinado(tipo1, tipo2):
+    return [entrenador[0] for entrenador in entrenadores if any(pokemon[2] == tipo1 and (pokemon[3] == tipo2 or pokemon[3] == "") for pokemon in entrenador[4])]
+
+def promedio_nivel(entrenador_nombre):
+    for entrenador in entrenadores:
+        if entrenador[0] == entrenador_nombre:
+            niveles = [pokemon[1] for pokemon in entrenador[4]]
+            return sum(niveles) / len(niveles) if len(niveles) > 0 else 0
+    return 0
+
+def cantidad_entrenadores_con_pokemon(pokemon_nombre):
+    return sum(1 for entrenador in entrenadores if any(pokemon[0] == pokemon_nombre for pokemon in entrenador[4]))
+
+def entrenadores_con_pokemons_repetidos():
+    repetidos = set()
+    entrenadores_con_repetidos = []
+    for entrenador in entrenadores:
+        pokemon_nombres = set()
+        for pokemon in entrenador[4]:
+            if pokemon[0] in pokemon_nombres:
+                repetidos.add(pokemon[0])
+                entrenadores_con_repetidos.append(entrenador[0])
+            else:
+                pokemon_nombres.add(pokemon[0])
+    return list(set(entrenadores_con_repetidos))
+
+def entrenadores_con_pokemons_especificos(pokemon_lista):
+    return [entrenador[0] for entrenador in entrenadores if any(pokemon[0] in pokemon_lista for pokemon in entrenador[4])]
+
+def tiene_entrenador_pokemon(entrenador_nombre, pokemon_nombre):
+    for entrenador in entrenadores:
+        if entrenador[0] == entrenador_nombre:
+            for pokemon in entrenador[4]:
+                if pokemon[0] == pokemon_nombre:
+                    return True, entrenador, pokemon
+    return False, None, None
+
+print(cantidad_pokemons("Entrenador1"))
+print(entrenadores_mas_de_tres_torneos())
+print(pokemon_mayor_nivel_entrenador_mas_torneos())
+print(mostrar_datos_entrenador("Entrenador2"))
+print(entrenadores_porcentaje_batallas_alto())
+print(entrenadores_tipo_combinado("fuego", "planta"))
+print(promedio_nivel("Entrenador1"))
+print(cantidad_entrenadores_con_pokemon("Pokémon1"))
+print(entrenadores_con_pokemons_repetidos())
+print(entrenadores_con_pokemons_especificos(["Tyrantrum", "Terrakion", "Wingull"]))
+print(tiene_entrenador_pokemon("Entrenador1", "Pokémon1"))
