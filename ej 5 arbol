@@ -1,0 +1,53 @@
+class Node:
+    def __init__(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+
+def insert(node, data):
+    if node is None:
+        return Node(data)
+    else:
+        if data["nombre"] < node.data["nombre"]:
+            node.left = insert(node.left, data)
+        else:
+            node.right = insert(node.right, data)
+    return node
+
+def in_order_traversal(node):
+    if node:
+        in_order_traversal(node.left)
+        print(node.data)
+        in_order_traversal(node.right)
+
+def find_heroes_starting_with_c(root):
+    if root:
+        find_heroes_starting_with_c(root.left)
+        if root.data["nombre"].startswith("C") and root.data["es_heroe"]:
+            print(root.data)
+        find_heroes_starting_with_c(root.right)
+
+def count_heroes(root):
+    if root is None:
+        return 0
+    else:
+        return (root.data["es_heroe"] +
+                count_heroes(root.left) +
+                count_heroes(root.right))
+
+def find_and_correct_dr_strange(root):
+    if root is None:
+        return
+    elif "Doctor Strange" in root.data["nombre"]:
+        root.data["nombre"] = "Dr. Strange"
+    else:
+        find_and_correct_dr_strange(root.left)
+        find_and_correct_dr_strange(root.right)
+
+def reverse_in_order_traversal(node):
+    if node:
+        reverse_in_order_traversal(node.right)
+        print(node.data)
+        reverse_in_order_traversal(node.left)
+
+# Aquí puedes agregar más funciones según sea necesario.

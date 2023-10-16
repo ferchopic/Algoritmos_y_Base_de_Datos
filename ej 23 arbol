@@ -1,0 +1,59 @@
+class Node:
+    def __init__(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+
+def insert(node, data):
+    if node is None:
+        return Node(data)
+    else:
+        if data["nombre"] < node.data["nombre"]:
+            node.left = insert(node.left, data)
+        else:
+            node.right = insert(node.right, data)
+    return node
+
+def in_order_traversal(node):
+    if node:
+        in_order_traversal(node.left)
+        print(node.data)
+        in_order_traversal(node.right)
+
+def find_creature(root, name):
+    if root is None or root.data["nombre"] == name:
+        return root
+
+    if root.data["nombre"] < name:
+        return find_creature(root.right, name)
+
+    return find_creature(root.left, name)
+
+def creatures_defeated_by(root, hero):
+    if root:
+        creatures_defeated_by(root.left, hero)
+        if hero in root.data["derrotado_por"]:
+            print(root.data)
+        creatures_defeated_by(root.right, hero)
+
+data = [
+    {"nombre": "Ceto", "derrotado_por": "-"},
+    {"nombre": "Tifón", "derrotado_por": "Zeus"},
+    {"nombre": "Equidna", "derrotado_por": "Argos Panoptes"},
+    {"nombre": "Dino", "derrotado_por": "-"},
+    {"nombre": "Pefredo", "derrotado_por": "-"},
+    {"nombre": "Enio", "derrotado_por": "-"},
+    {"nombre": "Escila", "derrotado_por": "-"},
+    {"nombre": "Caribdis", "derrotado_por": "-"},
+    {"nombre": "Euríale", "derrotado_por": "-"},
+    {"nombre": "Esteno", "derrotado_por": "-"},
+    {"nombre": "Medusa", "derrotado_por": "Perseo"},
+    {"nombre": "Ladón", "derrotado_por": "Heracles"},
+    {"nombre": "Águila del Cáucaso", "derrotado_por": "-"},
+    {"nombre": "Quimera", "derrotado_por": "Belerofonte"},
+    {"nombre": "Hidra de Lerna", "derrotado_por": "Heracles"},
+    {"nombre": "León de Nemea", "derrotado_por": "Heracles"},
+    {"nombre": "Esfinge", "derrotado_por": "Edipo"},
+    {"nombre": "Dragón de la Cólquida", "derrotado_por": "-"},
+    {"nombre": "Cerbero", "derrotado_por": "-"}
+]
