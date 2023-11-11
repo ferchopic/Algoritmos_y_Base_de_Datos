@@ -1,0 +1,44 @@
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, node1, node2, weight):
+        if node1 not in self.graph:
+            self.graph[node1] = {}
+        if node2 not in self.graph:
+            self.graph[node2] = {}
+        self.graph[node1][node2] = weight
+        self.graph[node2][node1] = weight
+
+    def minimum_spanning_tree(self):
+        mst = Graph()
+        vertices = list(self.graph.keys())
+        edges = []
+
+        for vertex in vertices:
+            for adj_vertex, weight in self.graph[vertex].items():
+                edges.append((weight, vertex, adj_vertex))
+
+        edges.sort()
+
+        parent = {vertices[0]: None}
+
+        for weight, vertex1, vertex2 in edges:
+            if vertex1 not in parent:
+                parent[vertex1] = vertex2
+                mst.add_edge(vertex1, vertex2, weight)
+            elif vertex2 not in parent:
+                parent[vertex2] = vertex1
+                mst.add_edge(vertex1, vertex2, weight)
+
+        return mst
+
+G = Graph()
+maravillas = ['Chichén Itzá', 'Cristo Redentor', 'Gran Muralla China', 'Machu Picchu', 'Petra', 'Coliseo', 'Taj Mahal']
+
+G.add_edge('Chichén Itzá', 'Cristo Redentor', 5)
+G.add_edge('Chichén Itzá', 'Gran Muralla China', 7)
+G.add_edge('Cristo Redentor', 'Machu Picchu', 10)
+
+mst = G.minimum_spanning_tree()
+print("El árbol de expansión mínima es: " + str(mst.graph))

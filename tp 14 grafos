@@ -1,0 +1,54 @@
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, node1, node2, weight):
+        if node1 not in self.graph:
+            self.graph[node1] = {}
+        if node2 not in self.graph:
+            self.graph[node2] = {}
+        self.graph[node1][node2] = weight
+        self.graph[node2][node1] = weight
+
+    def dijkstra(self, start, end):
+        shortest_paths = {start: (None, 0)}
+        current_node = start
+        visited = set()
+
+        while current_node != end:
+            visited.add(current_node)
+            destinations = self.graph[current_node]
+            weight_to_current_node = shortest_paths[current_node][1]
+
+            for next_node, weight in destinations.items():
+                weight = weight + weight_to_current_node
+                if next_node not in shortest_paths:
+                    shortest_paths[next_node] = (current_node, weight)
+                else:
+                    current_shortest_weight = shortest_paths[next_node][1]
+                    if current_shortest_weight > weight:
+                        shortest_paths[next_node] = (current_node, weight)
+
+            next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+            if not next_destinations:
+                return "Route Not Possible"
+            current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+
+        path = []
+        while current_node is not None:
+            path.append(current_node)
+            next_node = shortest_paths[current_node][0]
+            current_node = next_node
+        path = path[::-1]
+        return path
+
+G = Graph()
+
+ambientes = ['cocina', 'comedor', 'cochera', 'quincho', 'baño 1', 'baño 2', 'habitación 1', 'habitación 2', 'sala de estar', 'terraza', 'patio']
+
+G.add_edge('cocina', 'comedor', 5)
+G.add_edge('cocina', 'baño 1', 7)
+G.add_edge('comedor', 'sala de estar', 10)
+
+camino = G.dijkstra('habitación 1', 'sala de estar')
+print("El camino más corto es: " + str(camino))
